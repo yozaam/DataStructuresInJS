@@ -1,4 +1,4 @@
-console.log('\n\nMy queue implementation\n\n');
+console.log('\n\nMy queue implementation\n\n(while we can use arr.push() and arr.shift() to implement a queue, each shift operation is expensive)');
 
 
 
@@ -12,7 +12,7 @@ Queue.prototype.enqueue = function(data) {
 };
 
 
-Queue.prototype.dequeueMemoryInefficient = function() {
+Queue.prototype.dequeueMemoryLeak = function() {
   if (this._head < 0 || 
       this._head >= this._data.length) {
     return null;
@@ -46,6 +46,26 @@ Queue.prototype.isEmpty = function() {
     return false;
   }
 }
+
+Queue.prototype.dequeue = function() {
+  if (this._head < 0 || 
+      this._head >= this._data.length) {
+    return null;
+  }
+  
+  var dequeuedItem = this._data[this._head];
+  this._head++;
+  
+  if (this._head === 100) {
+    // when more than 100 items in front of head, delete them
+    this._data.splice(0, 100);
+    
+    // Reset the head
+    this._head = 0;
+  }
+  
+  return dequeuedItem;
+};
 
 
 var queue = new Queue();
